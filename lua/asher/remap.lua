@@ -1,31 +1,45 @@
-local Remap = require("asher.keymap")
-local nnoremap = Remap.nnoremap
-local inoremap = Remap.inoremap
-local tnoremap = Remap.tnoremap
-local vnoremap = Remap.vnoremap
-local xnoremap = Remap.xnoremap
-local nmap = Remap.nmap
+vim.keymap.set("n", "<leader>pv", vim.cmd.Ex)
 
--- Quick open netrw
-nnoremap("<leader>pv", "<cmd>Ex<CR>")
+-- Keymaps for better default experience
+-- See `:help vim.keymap.set()`
+vim.keymap.set({ 'n', 'v' }, '<space>', '<nop>', { silent = true })
 
--- Telescope
-nnoremap("<leader>ff", "<cmd>Telescope find_files<cr>")
-nnoremap("<leader>fg", "<cmd>Telescope live_grep<cr>")
-nnoremap("<leader>fb", "<cmd>Telescope buffers<cr>")
-nnoremap("<leader>fh", "<cmd>Telescope help_tags<cr>")
+-- remap for dealing with word wrap
+vim.keymap.set('n', 'k', "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
+vim.keymap.set('n', 'j', "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
 
--- Better Terminal mode
-tnoremap("<Esc>", "<C-\\><C-n>")
-tnoremap("<C-a>", "<Esc>")
+-- [[ highlight on yank ]]
+-- see `:help vim.highlight.on_yank()`
+local highlight_group = vim.api.nvim_create_augroup('yankhighlight', { clear = true })
+vim.api.nvim_create_autocmd('textyankpost', {
+  callback = function()
+    vim.highlight.on_yank()
+  end,
+  group = highlight_group,
+  pattern = '*',
+})
 
--- greatest remap ever
-xnoremap("<leader>p", "\"_dP")
 
+-- Move things lines in visual mode. Cool.
+vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv")
+vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv")
+
+
+-- Yank straight to the clipboard.
 -- next greatest remap ever : asbjornHaland
-nnoremap("<leader>y", "\"+y")
-vnoremap("<leader>y", "\"+y")
-nmap("<leader>Y", "\"+Y")
+vim.keymap.set({ "n", "v" }, "<leader>y", [["+y]])
+vim.keymap.set("n", "<leader>Y", [["+Y]])
 
--- Don't get cancelled like theprimagen
-inoremap("jk", "<Esc>")
+
+-- Turn off Q
+vim.keymap.set("n", "Q", "<nop>")
+
+-- Auto format
+vim.keymap.set("n", "<leader>fm", vim.lsp.buf.format)
+
+-- Better teriminal
+vim.keymap.set("t", "<Esc>", "<C-\\><C-n>")
+vim.keymap.set("t", "<C-v><Esc>", "<Esc>")
+
+-- ESC is too far away
+vim.keymap.set("i", "jk", "<Esc>")
