@@ -95,4 +95,7 @@ require('packer').startup(function(use)
 
 	-- Better terminal experience
 	use { "akinsho/toggleterm.nvim", tag = '*' }
+
+	-- Please work for astro-js
+	use { "wuelnerdotexe/vim-astro" }
 end)
