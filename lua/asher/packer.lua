@@ -2,7 +2,7 @@
 local install_path = vim.fn.stdpath 'data' .. '/site/pack/packer/start/packer.nvim'
 if vim.fn.empty(vim.fn.glob(install_path)) > 0 then
 	vim.fn.execute('!git clone https://github.com/wbthomason/packer.nvim ' .. install_path)
-	vim.cmd [[packadd packer.nvim]]
+	-- vim.cmd [[packadd packer.nvim]]
 end
 
 
@@ -37,16 +37,11 @@ require('packer').startup(function(use)
 	use 'lewis6991/gitsigns.nvim'
 
 	-- Theme
-	use({
-		'navarasu/onedark.nvim', -- Theme inspired by Atom
-		config = function()
-			vim.cmd('colorscheme onedark')
-		end
-	})
-	use 'nvim-lualine/lualine.nvim' -- Fancier statusline
+	use 'navarasu/onedark.nvim'        -- Theme inspired by Atom
+	use 'nvim-lualine/lualine.nvim'    -- Fancier statusline
 	use 'lukas-reineke/indent-blankline.nvim' -- Add indentation guides even on blank lines
-	use 'numToStr/Comment.nvim' -- "gc" to comment visual regions/lines
-	use 'tpope/vim-sleuth' -- Detect tabstop and shiftwidth automatically
+	use 'numToStr/Comment.nvim'        -- "gc" to comment visual regions/lines
+	use 'tpope/vim-sleuth'             -- Detect tabstop and shiftwidth automatically
 	use 'kyazdani42/nvim-web-devicons' -- Better icons
 
 	-- I'm not good at vim
@@ -80,17 +75,32 @@ require('packer').startup(function(use)
 		}
 	}
 
+	-- debug
+	use 'rcarriga/nvim-dap-ui'
+	use 'jay-babu/mason-nvim-dap.nvim'
+	use 'mfussenegger/nvim-dap-python'
+	use {
+		'mfussenegger/nvim-dap',
+		-- NOTE: And you can specify dependencies as well
+		dependencies = {
+			-- Creates a beautiful debugger UI
+			'rcarriga/nvim-dap-ui',
+
+			-- Installs the debug adapters for you
+			'williamboman/mason.nvim',
+			'jay-babu/mason-nvim-dap.nvim',
+
+			-- Add your own debuggers here
+			'mfussenegger/nvim-dap-python'
+		}
+	}
+
 	-- Linting
 	use {
 		"jose-elias-alvarez/null-ls.nvim",
 		requires = {
 			{ "nvim-lua/plenary.nvim" }
 		}
-	}
-
-	-- Copilot...
-	use {
-		"github/copilot.vim"
 	}
 
 	-- Better terminal experience
